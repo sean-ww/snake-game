@@ -2,6 +2,10 @@
 
 A Vue.js snake game using Nuxt.js that uses [sean-ww/snake-game-api](https://github.com/sean-ww/snake-game-api) to upload high scores.
 
+![Snake game start screen](https://github.com/sean-ww/snake-game/blob/master/gameView1.png "Snake game start screen")
+
+![Snake game submit score screen](https://github.com/sean-ww/snake-game/blob/master/gameView2.png "Snake game submit score screen")
+
 ## Build Setup
 
 ``` bash
