@@ -1,0 +1,75 @@
+=border-radius($radius)
+  -moz-border-radius: $radius
+  -ms-border-radius: $radius // sass-lint:disable-line no-misspelled-properties
+  -webkit-border-radius: $radius
+  border-radius: $radius
+
+=box-shadow($shadow)
+  -moz-box-shadow: $shadow
+  -webkit-box-shadow: $shadow
+  box-shadow: $shadow
+
+=placeholder
+  &.placeholder
+    @content
+  &:-moz-placeholder
+    @content
+  &::-moz-placeholder
+    @content
+  &:-ms-input-placeholder
+    @content
+  &::-webkit-input-placeholder
+    @content
+
+=opacity($value)
+  $ie-value: $value * 100
+  -ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=' + $ie-value + ')'
+  filter: alpha(opacity = $ie-value)
+  opacity: $value
+
+=transform($transforms)
+  -moz-transform: $transforms
+  -ms-transform: $transforms
+  -o-transform: $transforms
+  -webkit-transform: $transforms
+  transform: $transforms
+
+=transition($duration, $property: all, $timing-function: linear)
+  -moz-transition: $property $duration $timing-function
+  -o-transition: $property $duration $timing-function
+  -webkit-transition: $property $duration $timing-function
+  transition: $property $duration $timing-function
+
+=keyframes($animation-name)
+  @-webkit-keyframes #{$animation-name}
+    @content
+
+  @-moz-keyframes #{$animation-name}
+    @content
+
+  @-ms-keyframes #{$animation-name}
+    @content
+
+  @-o-keyframes #{$animation-name}
+    @content
+
+  @keyframes #{$animation-name}
+    @content
+
+=animation($str)
+  -moz-animation: #{$str}
+  -ms-animation: #{$str}
+  -o-animation: #{$str} // sass-lint:disable-line no-misspelled-properties
+  -webkit-animation: #{$str}
+  animation: #{$str}
+
+// sass-lint:disable no-duplicate-properties
+=background-gradient($from, $to)
+  background: $to // Old browsers
+  background: -moz-linear-gradient(top, $from 0%, $to 60%) // FF3.6+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, $from), color-stop(60%, $to)) // Chrome,Safari4+
+  background: -webkit-linear-gradient(top, $from 0%, $to 60%) // Chrome10+,Safari5.1+
+  background: -o-linear-gradient(top, $from 0%, $to 60%) // Opera 11.10+
+  background: -ms-linear-gradient(top, $from 0%, $to 60%) // IE10+
+  background: linear-gradient(to bottom, $from 0%, $to 60%) // W3C
+// sass-lint:enable no-duplicate-properties

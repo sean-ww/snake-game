@@ -1,0 +1,46 @@
+.game-container
+  height: px-to-rem(576)
+  position: relative
+  width: px-to-rem(576)
+
+  button
+    background-color: $color-black
+    border: 0
+    color: $color-white
+    cursor: pointer
+    display: inline-block
+    font-family: inherit
+    font-size: px-to-rem(13)
+    font-weight: 700
+    letter-spacing: px-to-rem(1)
+    line-height: px-to-rem(13)
+    margin: 0
+    padding: px-to-rem(12) px-to-rem(15)
+    position: relative
+    text-decoration: none
+    text-transform: uppercase
+    vertical-align: top
+    white-space: nowrap
+
+  #stage
+    margin: 0 auto
+    position: relative
+
+    .cell,
+    .back-cell
+      background-color: $enrise-primary
+      position: absolute
+      transition: all 0.1s
+
+    .cell
+      &.filled
+        background-color: $color-white
+        transform: scale(0.9)
+
+        &.food
+          background-color: $color-black
+          transform: scale(1)
+
+        &.head
+          background-color: $color-white
+          transform: scale(1)
