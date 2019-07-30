@@ -22,7 +22,7 @@ export default {
         name,
         score,
       })
-      .then(response => {
+      .then(() => {
         commit(GameMutationTypes.SAVE_SCORE);
         commit(GameMutationTypes.SAVING_SCORE, { isSaving: false });
       })

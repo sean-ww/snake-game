@@ -1,67 +1,79 @@
 // Based upon https://github.com/ilyagru/Space-Snake
 
 import keyCode from './keyCode.constants';
+import { CellInterface } from './Game.interfaces';
 
 class Part {
-  constructor(x, y) {
+  public x: number;
+  public y: number;
+
+  constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
   }
 }
 
 class Snake {
-  constructor(game) {
+  public x: number;
+  public y: number;
+  public parts: Part[];
+  protected game: GameLogic;
+  protected xSpeed: number;
+  protected ySpeed: number;
+  protected canChange: boolean;
+
+  constructor(game: GameLogic) {
     this.game = game;
     this.x = 12;
     this.y = 12;
-    this.xspeed = 0;
-    this.yspeed = 1;
+    this.xSpeed = 0;
+    this.ySpeed = 1;
     this.canChange = true;
     this.parts = [
-      { x: 12, y: 12 },
-      { x: 12, y: 11 },
-      { x: 12, y: 10 },
-      { x: 11, y: 10 },
-      { x: 10, y: 10 },
-      { x: 9, y: 10 },
-      { x: 8, y: 10 },
+      new Part(12, 12),
+      new Part(12, 11),
+      new Part(12, 10),
+      new Part(11, 10),
+      new Part(10, 10),
+      new Part(9, 10),
+      new Part(8, 10),
     ];
   }
 
-  controller(key) {
-    if (key === keyCode.ARROW_LEFT && this.yspeed !== 0 && this.canChange) {
+  controller(key: number): void {
+    if (key === keyCode.ARROW_LEFT && this.ySpeed !== 0 && this.canChange) {
       this.canChange = false;
-      this.xspeed = -1;
-      this.yspeed = 0;
+      this.xSpeed = -1;
+      this.ySpeed = 0;
     }
 
-    if (key === keyCode.ARROW_RIGHT && this.yspeed !== 0 && this.canChange) {
+    if (key === keyCode.ARROW_RIGHT && this.ySpeed !== 0 && this.canChange) {
       this.canChange = false;
-      this.xspeed = 1;
-      this.yspeed = 0;
+      this.xSpeed = 1;
+      this.ySpeed = 0;
     }
 
-    if (key === keyCode.ARROW_UP && this.xspeed !== 0 && this.canChange) {
+    if (key === keyCode.ARROW_UP && this.xSpeed !== 0 && this.canChange) {
       this.canChange = false;
-      this.yspeed = -1;
-      this.xspeed = 0;
+      this.ySpeed = -1;
+      this.xSpeed = 0;
     }
 
-    if (key === keyCode.ARROW_DOWN && this.xspeed !== 0 && this.canChange) {
+    if (key === keyCode.ARROW_DOWN && this.xSpeed !== 0 && this.canChange) {
       this.canChange = false;
-      this.yspeed = 1;
-      this.xspeed = 0;
+      this.ySpeed = 1;
+      this.xSpeed = 0;
     }
   }
 
-  addPart() {
+  addPart(): void {
     const lastPart = this.parts[this.parts.length - 1];
     this.parts.push(new Part(lastPart.x, lastPart.y));
   }
 
-  update() {
-    this.x += this.xspeed;
-    this.y += this.yspeed;
+  update(): void {
+    this.x += this.xSpeed;
+    this.y += this.ySpeed;
 
     if (this.x < 0) {
       this.x = 0;
@@ -103,7 +115,7 @@ class Snake {
     this.canChange = true;
   }
 
-  die() {
+  die(): void {
     stopSnake();
 
     const lastScore = this.game.scoreValue;
@@ -113,32 +125,59 @@ class Snake {
 }
 
 class Food {
-  constructor(game) {
+  public x: number;
+  public y: number;
+  protected game: GameLogic;
+  protected isFood: boolean;
+
+  constructor(game: GameLogic) {
     this.game = game;
     this.isFood = true;
 
-    this.placeFood();
-  }
-
-  placeFood() {
-    this.x = Math.floor(Math.random() * this.game.width);
+    this.x = this.generateRandomFoodPosition(this.game.width);
     this.y = Math.floor(Math.random() * this.game.height);
   }
 
-  update() {
+  private generateRandomFoodPosition(maxValue: number): number {
+    return Math.floor(Math.random() * maxValue);
+  }
+
+  placeFood(): void {
+    this.x = this.generateRandomFoodPosition(this.game.width);
+    this.y = this.generateRandomFoodPosition(this.game.height);
+  }
+
+  update(): void {
     this.game.grid.fillGrid(this.x, this.y, this.isFood, false);
   }
 }
 
+class Cell {
+  public cell: CellInterface;
+  public value: boolean;
+  public isFood: boolean;
+  public isHead: boolean;
+
+  constructor(cell: CellInterface, value: boolean, isFood: boolean, isHead: boolean) {
+    this.cell = cell;
+    this.value = value;
+    this.isFood = isFood;
+    this.isHead = isHead;
+  }
+}
+
 class RenderGrid {
-  constructor(game) {
+  protected game: GameLogic;
+  protected grid: Cell[][];
+
+  constructor(game: GameLogic) {
     this.game = game;
     this.grid = [];
 
     this.buildGrid();
   }
 
-  buildGrid() {
+  buildGrid(): void {
     for (let x = 0; x < this.game.width; x++) {
       this.grid[x] = [];
 
@@ -160,17 +199,12 @@ class RenderGrid {
         this.game.stage.appendChild(backCell);
         this.game.stage.appendChild(cell);
 
-        this.grid[x][y] = {
-          cell,
-          value: false,
-          isFood: false,
-          isHead: false,
-        };
+        this.grid[x][y] = new Cell(cell, false, false, false);
       }
     }
   }
 
-  fillGrid(x, y, isFood, isHead) {
+  fillGrid(x: number, y: number, isFood: boolean, isHead: boolean): void {
     if (this.grid[x]) {
       if (this.grid[x][y]) {
         this.grid[x][y].value = true;
@@ -180,7 +214,7 @@ class RenderGrid {
     }
   }
 
-  update() {
+  update(): void {
     for (let x = 0; x < this.game.width; x++) {
       for (let y = 0; y < this.game.height; y++) {
         const gridPiece = this.grid[x][y];
@@ -211,8 +245,19 @@ class RenderGrid {
   }
 }
 
-class Game {
-  constructor(store, width, height, size, fps) {
+class GameLogic {
+  public store: object;
+  public width: number;
+  public height: number;
+  public size: number;
+  public stage: any;
+  public scoreValue: number;
+  public grid: RenderGrid;
+  protected fps: number;
+  protected food: Food;
+  protected snake: Snake;
+
+  constructor(store: object, width: number, height: number, size: number, fps: number) {
     this.store = store;
     this.width = width;
     this.height = height;
@@ -220,7 +265,6 @@ class Game {
     this.fps = fps;
 
     this.stage = document.getElementById('stage');
-    this.score = document.getElementById('score');
     this.scoreValue = 0;
 
     this.grid = new RenderGrid(this);
@@ -232,21 +276,17 @@ class Game {
     this.grid.update();
   }
 
-  startLoop() {
-    this.intVal = setInterval(() => {
+  startLoop(): void {
+    setInterval(() => {
       this.update();
     }, 1000 / this.fps);
-    // Property isPlaying = true
-    return true;
   }
 
-  finishLoop() {
+  finishLoop(): void {
     stopSnake();
-    // Property isPlaying = false
-    return false;
   }
 
-  update() {
+  update(): void {
     this.food.update();
     this.snake.update();
 
@@ -257,7 +297,7 @@ class Game {
 
       if (this.snake.parts.length === this.height * this.width) {
         this.snake.die();
-        winGame(this.store, true);
+        winGame(this.store);
       }
     }
 
@@ -265,20 +305,21 @@ class Game {
   }
 }
 
-function stopSnake() {
+function stopSnake(): void {
   // Clear all Timeouts to stop the snake
+  // @ts-ignore
   let id = window.setTimeout(null, 0);
   while (id--) {
     window.clearTimeout(id);
   }
 }
 
-function finishGame(store, lastGame) {
+function finishGame(store, lastGame): void {
   store.dispatch('TOGGLE_GAME', lastGame);
 }
 
-function winGame(store) {
+function winGame(store): void {
   store.dispatch('WIN_GAME', true);
 }
 
-export default Game;
+export default GameLogic;

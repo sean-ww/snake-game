@@ -8,7 +8,7 @@
     "fix-js": "node_modules/.bin/eslint --ext .js,.vue --ignore-path .gitignore . --fix",
     "fix-sass": "node_modules/.bin/sass-lint-auto-fix",
     "lint": "npm run lint-js && npm run lint-sass",
-    "lint-js": "node_modules/.bin/eslint --ext .js,.vue --ignore-path .gitignore .",
+    "lint-js": "node_modules/.bin/eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "lint-sass": "node_modules/.bin/sass-lint",
     "precommit": "npm run lint",
     "test": "jest",
@@ -21,12 +21,18 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^2.6.0",
     "nuxt": "^2.0.0",
-    "sass-lint-auto-fix": "^0.17.0"
+    "sass-lint-auto-fix": "^0.17.0",
+    "ts-node": "^8.3.0",
+    "vue-class-component": "^7.1.0",
+    "vue-property-decorator": "^8.2.1"
   },
   "devDependencies": {
+    "@nuxt/typescript": "^2.8.1",
     "@nuxtjs/eslint-config": "^0.0.1",
     "@nuxtjs/eslint-module": "^0.0.1",
     "@nuxtjs/style-resources": "^0.1.2",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",

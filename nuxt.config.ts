@@ -1,4 +1,6 @@
-export default {
+import NuxtConfiguration from '@nuxt/config';
+
+const config: NuxtConfiguration = {
   server: {
     port: 8282,
   },
@@ -64,3 +66,5 @@ export default {
     sass: ['@/assets/sass/global.sass'],
   },
 };
+
+export default config;
