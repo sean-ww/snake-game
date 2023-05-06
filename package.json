@@ -20,7 +20,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^2.6.0",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.16.3",
     "sass-lint-auto-fix": "^0.17.0"
   },
   "devDependencies": {
@@ -47,7 +47,7 @@
     "nodemon": "^1.18.9",
     "prettier": "^1.16.4",
     "sass-loader": "^7.1.0",
-    "vue-jest": "^3.0.3"
+    "vue-jest": "^4.0.1"
   },
   "repository": {
     "type": "git",
